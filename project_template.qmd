@@ -1,0 +1,84 @@
+---
+title: "SEMESTER FINAL PROJECT"
+author: "EMAN A. AWAN"
+format: 
+        html:
+                self-contained: true
+                code-fold: true
+                code-summary: "Show the code"
+editor: source
+---
+
+## Introduction
+
+I got my data set from Varieties of Democracy, but downloaded it of off canvas. Egalitarian and participatory democracies both uphold fundamental principles including justice, inclusivity, and equality. Ensuring that citizens have a direct say in the policies that impact their lives is one way that participatory democracy can be used to accomplish egalitarian objectives. Conversely, participatory processes can help guarantee inclusive and representational decision-making in an egalitarian democracy. I hope to learn the value between citizen involvement and a dedication to decreasing social and economic inequality by comprehending the relationship between these notions.
+ 
+
+My data source obtained the data I used by collecting the data from observations and surveys.I got my data Varieties of Democracy.
+
+My two variables are Participatory Democracy Index (v2x_partipdem), Egalitarian Democracy Index (v2x_egaldem).
+
+## Summary Statistices of the variables
+
+```{r}
+library(readr)
+proj_data <- read_csv("~/Documents/Project data/proj_data.csv")
+head(proj_data)
+
+as.numeric(length(proj_data$v2x_egaldem))
+median(proj_data$v2x_egaldem)
+mean(proj_data$v2x_egaldem)
+var(proj_data$v2x_egaldem)
+sd(proj_data$v2x_egaldem)
+summary(proj_data$v2x_egaldem)
+
+as.numeric(length(proj_data$v2x_partipdem))
+median(proj_data$v2x_partipdem)
+mean(proj_data$v2x_partipdem)
+var(proj_data$v2x_partipdem)
+sd(proj_data$v2x_partipdem)
+summary(proj_data$v2x_partipdem)
+
+```
+
+## Histograms of the variables
+
+```{r}
+hist(proj_data$v2x_egaldem)
+
+hist(proj_data$v2x_partipdem)
+
+
+```
+
+## The Relationship between the variables
+
+Participation is the independent variable. Egalitarian democracy is the dependent variable. There is a positive coorelation between both variables, meaning that when one grows, the other also tends to grow. Societies that have high rates of citizen participation, for instance, may also be committed to lowering social and economic inequality. The covariance between changes in both variables shows an increase in one indicates a relationship with an increase in the other, and vice versa, according to a positive covariance.
+
+## Regression Results
+
+```{r message=FALSE, warning=FALSE}
+
+varcor <- cor(proj_data$v2x_egaldem, proj_data$v2x_partipdem)
+
+model <- lm(v2x_egaldem ~ v2x_partipdem, data = proj_data)
+summary(model)
+
+
+
+# plot of model results with confidence intervals
+library(ggplot2)
+ggplot(data = proj_data, aes(x = v2x_partipdem, y = v2x_partipdem)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "Figure 4: Confidence Interval for Regression Line",
+       subtitle = "95% Confidence Interval for the Slope",
+       caption = "Source: VDem ver 13") + 
+        xlab("Participatory Democracy Index") + 
+        ylab("Egalitarian Democracy Index") 
+```
+
+The intercept's p-value is 0.317, over the conventional significance threshold of 0.05. This could lead us to fail in rejecting the null hypothesis that the intercept is zero and indicate that the intercept is not statistically significant. The coefficient of v2x_partipdem has an extremely modest p-value, which suggests that it is highly statistically significant. The null hypothesis—which states that the true coefficient is zero—can be rejected. The estimated rise in Egalitarian Democracy (v2x_egaldem v2x_egaldem) is 1.13 units for every unit increase in Participatory Democracy (v2x_partipdem v2x_partipdem).
+
+
+In conclusion, the analysis clarifies the statistical relationship between egalitarian democracy and participatory democracy, but it also raises further questions about the underlying processes, the contextual factors, and possible directions for future study. A more thorough grasp of the interactions between these two crucial facets of democratic government would result from the investigation of new data sources and research techniques.
